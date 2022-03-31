@@ -5,21 +5,21 @@ from urllib import response
 from numpy import equal
 import requests
 from bs4 import BeautifulSoup
-
+import mysql.connector
 
 def getdata(url):
     r = requests.get(url)
     return r.content
 
 
-def paragraph(listing_final,xyz):  
+def paragraph(listing_final,xyz,keyword):  
     i = 0
     for line in listing_final:
         tuples = []
         print(line)
         # print("")  
+        tuples.append(keyword)
         tuples.append(i+1)
-        tuples.append(line)  
         # soup.title.get_text()
         htmldata = getdata(line)
         soup = BeautifulSoup(htmldata, 'html.parser')
@@ -29,12 +29,7 @@ def paragraph(listing_final,xyz):
             b=data_a.get_text()
             c =c + (" ".join(b.split()))
         tuples.append(c)
-        # print("CONTENT:")
-        # x = paragraph(line)
-        # print(x)
-        # print("")
-        # i+=1
-        
+        tuples.append(line)      
         data = ''
         y=0
         a=''
@@ -45,7 +40,7 @@ def paragraph(listing_final,xyz):
             a = a + (" ".join(x.split()))
             # print(x)
             y=y+1
-        tuples.append(a)
+        # tuples.append(a)
         xyz.append(tuples)
         i = i+1
         print("")
@@ -56,11 +51,24 @@ def paragraph(listing_final,xyz):
     # print("")
     print("")
     tuples_final = [tuple(x) for x in xyz]
-    for line in tuples_final:
-        print(line)
-    # print(tuples_final)
+    # for line in tuples_final:
+    #     print(line)
+    print(tuples_final)
     print(len(xyz))
     print("")
+    mydb = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="1234",
+    database="minor_2"
+    )
+
+    my_cursor=mydb.cursor()
+    insert_keyword="INSERT INTO KEYWORD (WORD,RANKING,HEADING,LINKS) VALUES(%s,%s,%s,%s)"
+    my_cursor.executemany(insert_keyword,tuples_final)
+    my_cursor.execute("SELECT * FROM KEYWORD")
+    myresult = my_cursor.fetchall()
+    mydb.commit()
     
 
 def find_local_anchors(soup, start_anchor):
@@ -135,7 +143,7 @@ for line in list_final:
         listing_final.append(line)    
     
 xyz = []
-paragraph(listing_final,xyz)       
+paragraph(listing_final,xyz,keyword)       
 
 # for line in listing_final:
 #     print(line)
@@ -147,15 +155,27 @@ paragraph(listing_final,xyz)
 #     print("")
 #     i+=1
 
-
+# list final
+# print(overall_final_list)
 
 # for line in listing_final:
 #     print(line)
 
 
 # removing unnecessary websites
+#  pushing changes to db
+# mydb = mysql.connector.connect(
+#   host="localhost",
+#   user="root",
+#   password="1234",
+#   database="minor_2"
+# )
 
-
-
-
-
+# my_cursor=mydb.cursor()
+# insert_keyword="INSERT INTO KEYWORD (WORD,RANKING,HEADING,LINKS) VALUES(%s,%s,%s,%s)"
+# my_cursor.executemany(insert_keyword,overall_final_list)
+# my_cursor.execute("SELECT * FROM KEYWORD")
+# myresult = my_cursor.fetchall()
+# for x in myresult:
+#     print (x)
+# mydb.commit()

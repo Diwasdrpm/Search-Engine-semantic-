@@ -2,6 +2,7 @@ import re
 from pathlib import Path
 import queue
 from urllib import response
+from numpy import equal
 import requests
 from bs4 import BeautifulSoup
 
@@ -11,25 +12,56 @@ def getdata(url):
     return r.content
 
 
-def paragraph(a):
-    # if len(a) > 1:
-    #     return -1
-    try:
-        htmldata = getdata(a)
+def paragraph(listing_final,xyz):  
+    i = 0
+    for line in listing_final:
+        tuples = []
+        print(line)
+        # print("")  
+        tuples.append(i+1)
+        tuples.append(line)  
+        # soup.title.get_text()
+        htmldata = getdata(line)
         soup = BeautifulSoup(htmldata, 'html.parser')
+        data_a = ''
+        c =''
+        for data_a in soup.find_all("h1"):
+            b=data_a.get_text()
+            c =c + (" ".join(b.split()))
+        tuples.append(c)
+        # print("CONTENT:")
+        # x = paragraph(line)
+        # print(x)
+        # print("")
+        # i+=1
+        
         data = ''
         y=0
+        a=''
         for data in soup.find_all("p"):
             if(y>3):
                 break
             x=data.get_text()
-            x = " ".join(x.split())
-            print(x)
+            a = a + (" ".join(x.split()))
+            # print(x)
             y=y+1
-
-    except:
-        print("No data recieved from that site......")
-
+        tuples.append(a)
+        xyz.append(tuples)
+        i = i+1
+        print("")
+    print("")
+    # print("")   
+    # print(xyz)
+    print("")
+    # print("")
+    print("")
+    tuples_final = [tuple(x) for x in xyz]
+    for line in tuples_final:
+        print(line)
+    # print(tuples_final)
+    print(len(xyz))
+    print("")
+    
 
 def find_local_anchors(soup, start_anchor):
     anchors = set()
@@ -63,7 +95,7 @@ def crawl(base_url , start_anchor):
         if search_anchors.empty():
             break
         start_anchor = search_anchors.get()
-    # print(count)
+    print(count)
     return urls
 
 
@@ -78,9 +110,7 @@ for line in urls:
         Link_of_urls.add(line.split('=')[1])
 
 
-
 list_link_of_urls = list(Link_of_urls)
-
 
 # Parasing URL's and get the desired URL in working format
 list_final = []
@@ -103,46 +133,29 @@ for line in list_final:
         list_final.remove(line)
     else:
         listing_final.append(line)    
+    
+xyz = []
+paragraph(listing_final,xyz)       
 
-
-for line in listing_final:
-    print(line)
-    print("")    
-    print("CONTENT:")
-    x = paragraph(line)
-    # print(x)
-    print("")
-    print("")
-    i+=1
-
-
-print("")
-
-
-# i=0
-# list_fully_final = []
-# for line in list_final:
-#     if(len(list_final[i]) > 1):
-#         list_fully_final[i].append(list_final[0][0])
-#     else:
-#         list_fully_final[i].append(list_final[i])
-#     i=i+1
-
-
-
-# for item in fully_final:
-#     print(item)
-
-
-
-# while(i<len(list_final)):
-#     htmldata = getdata(list_final[i])
-#     soup = BeautifulSoup(htmldata, 'html.parser')
-#     data = ''
-#     print( list_final[i] + " : paragraph for this url is listed below")
-
-#     for data in soup.find_all("p"):
-#         print(data.get_text())
-
+# for line in listing_final:
+#     print(line)
+#     print("")    
+#     print("CONTENT:")
+#     x = paragraph(line)
+#     # print(x)
+#     print("")
+#     print("")
 #     i+=1
+
+
+
+# for line in listing_final:
+#     print(line)
+
+
+# removing unnecessary websites
+
+
+
+
 

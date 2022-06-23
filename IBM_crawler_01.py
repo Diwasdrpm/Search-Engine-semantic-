@@ -17,36 +17,64 @@ def paragraph(listing_final,xyz,keyword):
     i = 0
     for line in listing_final:
         tuples = []
-        # print(line)
+        print(line)
         # print("")  
         tuples.append(keyword)
         tuples.append(i+1)
         # soup.title.get_text()
-        try:      
-            htmldata = getdata(line)
-            soup = BeautifulSoup(htmldata, 'html.parser')
-            data_a = ''
-            c =''
-            for data_a in soup.find_all("h1"):
-                b=data_a.get_text()
-                c =c + (" ".join(b.split()))
-        except:
+        htmldata = getdata(line)
+        soup = BeautifulSoup(htmldata, 'html.parser')
+        z=0
+        data_a = ''
+        c=''
+        b=''
+        for data_a in soup.find_all("h1"):
+            b=data_a.get_text()
+        for each_word in b:
+            z=z+1
+            c=c+each_word
+            if(z>50):
+                break
+        # try:      
+        #     htmldata = getdata(line)
+        #     soup = BeautifulSoup(htmldata, 'html.parser')
+        #     data_a = ''
+        #     c =''
+        #     for data_a in soup.find_all("h1"):
+        #         b=data_a.get_text()
+        #         c =c + (" ".join(b.split()))
+        # except:
+        #     c='cant get the heading'
+        if c == NULL:
             c='cant get the heading'
+            c=c+'...'
         tuples.append(c)
         tuples.append(line)      
         data = ''
         y=0
         a=''
-        try:
-            for data in soup.find_all("p"):
-                if(y>3):
-                    break
-                x=data.get_text()
-                a = a + (" ".join(x.split()))
-                # print(x)
-                y=y+1
-        except:
-            a='no details availiable'
+        x=''
+        for data in soup.find_all("p"):
+            x=data.get_text()
+            x.split()
+        for each_word in x:
+            y=y+1
+            a=a+each_word
+            if(y>250):
+                break
+
+        # try:
+        #     for data in soup.find_all("p"):
+        #         if(y>3):
+        #             break
+        #         x=data.get_text()
+        #         a = a + (" ".join(x.split()))
+        #         # print(x)
+        #         y=y+1
+        # except:
+        #     a='no details availiable'
+        
+        a=a+"..."
         tuples.append(a)
         xyz.append(tuples)
         i = i+1

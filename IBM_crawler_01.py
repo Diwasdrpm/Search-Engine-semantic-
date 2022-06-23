@@ -148,12 +148,12 @@ keyword = input("Enter the word you want to search on google:")
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Isolux@1987",
-    database="crawler_database"
+    password="your password",
+    database="your database name"
     )
 my_cursor=mydb.cursor()
 my_cursor.execute(
-    "SELECT * FROM DATASET WHERE WORD = %s",
+    "SELECT * FROM your_table_name WHERE column_name = %s",
     (keyword,)
 )
 
@@ -167,7 +167,7 @@ for i in my_cursor:
 if j != 0:
     cursor=mydb.cursor()
     cursor.execute(
-    "SELECT * FROM DATASET WHERE WORD = %s",
+    "SELECT * FROM tablr_name WHERE column_name = %s",
     (keyword,)
     )
     # result = cursor.fetchall()

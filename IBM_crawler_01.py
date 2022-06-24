@@ -18,33 +18,30 @@ def paragraph(listing_final,xyz,keyword):
     for line in listing_final:
         tuples = []
         print(line)
-        # print("")  
+        print("")  
         tuples.append(keyword)
         tuples.append(i+1)
         # soup.title.get_text()
         htmldata = getdata(line)
         soup = BeautifulSoup(htmldata, 'html.parser')
-        z=0
-        data_a = ''
-        c=''
-        b=''
-        for data_a in soup.find_all("h1"):
-            b=data_a.get_text()
-        for each_word in b:
-            z=z+1
-            c=c+each_word
-            if(z>50):
-                break
-        # try:      
-        #     htmldata = getdata(line)
-        #     soup = BeautifulSoup(htmldata, 'html.parser')
-        #     data_a = ''
-        #     c =''
-        #     for data_a in soup.find_all("h1"):
-        #         b=data_a.get_text()
-        #         c =c + (" ".join(b.split()))
-        # except:
-        #     c='cant get the heading'
+           
+        try:
+            z=0
+            b=''
+            data_a = ''
+            c =''
+            for data_a in soup.find_all("h1"):
+                b=data_a.get_text()
+            for each_word in b:
+                z=z+1
+                c=c+each_word
+                if(z>50):
+                    break
+            # for data_a in soup.find_all("h1"):
+            #     b=data_a.get_text()
+            #     c =c + (" ".join(b.split()))
+        except:
+            c='cant get the heading'
         if c == NULL:
             c='cant get the heading'
             c=c+'...'
@@ -80,10 +77,6 @@ def paragraph(listing_final,xyz,keyword):
         i = i+1
         # print("")
     print("")
-    # print("")   
-    # print(xyz)
-    print("")
-    # print("")
     print("")
     tuples_final = [tuple(x) for x in xyz]
     for line in tuples_final:
@@ -139,21 +132,21 @@ def crawl(base_url , start_anchor):
         if search_anchors.empty():
             break
         start_anchor = search_anchors.get()
-    print(count)
+    # print(count)
     return urls
 
 
-
+print("")
 keyword = input("Enter the word you want to search on google:")
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="your password",
-    database="your database name"
+    password="Isolux@1987",
+    database="crawler_database"
     )
 my_cursor=mydb.cursor()
 my_cursor.execute(
-    "SELECT * FROM your_table_name WHERE column_name = %s",
+    "SELECT * FROM DATASET WHERE WORD = %s",
     (keyword,)
 )
 
@@ -167,7 +160,7 @@ for i in my_cursor:
 if j != 0:
     cursor=mydb.cursor()
     cursor.execute(
-    "SELECT * FROM tablr_name WHERE column_name = %s",
+    "SELECT * FROM DATASET WHERE WORD = %s",
     (keyword,)
     )
     # result = cursor.fetchall()
@@ -196,8 +189,7 @@ else:
     # for line in list_final:
     #     print(line)
 
-    print("")
-    print("")
+    
     print("")
 
     i=0
@@ -207,23 +199,9 @@ else:
             list_final.remove(line)
         else:
             listing_final.append(line)    
-        
+    # print(listing_final)    
     xyz = []
     paragraph(listing_final,xyz,keyword)   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

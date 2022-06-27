@@ -3,7 +3,6 @@ import re
 from pathlib import Path
 import queue
 from urllib import response
-from numpy import equal
 import requests
 from bs4 import BeautifulSoup
 import mysql.connector
@@ -17,15 +16,16 @@ def paragraph(listing_final,xyz,keyword):
     i = 0
     for line in listing_final:
         tuples = []
+        print("") 
         print(line)
         print("")  
         tuples.append(keyword)
         tuples.append(i+1)
         # soup.title.get_text()
-        htmldata = getdata(line)
-        soup = BeautifulSoup(htmldata, 'html.parser')
            
-        try:
+        try:    
+            x = requests.get(line, timeout = 5)
+            soup = BeautifulSoup(x.content, 'html.parser')
             z=0
             b=''
             data_a = ''
@@ -47,29 +47,32 @@ def paragraph(listing_final,xyz,keyword):
             c=c+'...'
         tuples.append(c)
         tuples.append(line)      
-        data = ''
-        y=0
-        a=''
-        x=''
-        for data in soup.find_all("p"):
-            x=data.get_text()
-            x.split()
-        for each_word in x:
-            y=y+1
-            a=a+each_word
-            if(y>250):
-                break
+        
 
-        # try:
-        #     for data in soup.find_all("p"):
-        #         if(y>3):
-        #             break
-        #         x=data.get_text()
-        #         a = a + (" ".join(x.split()))
-        #         # print(x)
-        #         y=y+1
-        # except:
-        #     a='no details availiable'
+        try:
+            x = requests.get(line, timeout = 5)
+            soup = BeautifulSoup(x.content, 'html.parser')
+            data = ''
+            y=0
+            a=''
+            x=''
+            for data in soup.find_all("p"):
+                x=data.get_text()
+                x.split()
+            for each_word in x:
+                y=y+1
+                a=a+each_word
+                if(y>250):
+                    break
+            # for data in soup.find_all("p"):
+            #     if(y>3):
+            #         break
+            #     x=data.get_text()
+            #     a = a + (" ".join(x.split()))
+            #     # print(x)
+            #     y=y+1
+        except:
+            a='no details availiable'
         
         a=a+"..."
         tuples.append(a)
@@ -199,7 +202,7 @@ else:
             list_final.remove(line)
         else:
             listing_final.append(line)    
-    # print(listing_final)    
+    print(listing_final)    
     xyz = []
     paragraph(listing_final,xyz,keyword)   
 

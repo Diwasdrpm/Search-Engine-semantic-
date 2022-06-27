@@ -41,9 +41,9 @@ def paragraph(listing_final,xyz,keyword):
             #     b=data_a.get_text()
             #     c =c + (" ".join(b.split()))
         except:
-            c='cant get the heading'
+            c='Timeout occured'
         if c == NULL:
-            c='cant get the heading'
+            c='Timeout occured'
             c=c+'...'
         tuples.append(c)
         tuples.append(line)      
@@ -72,7 +72,7 @@ def paragraph(listing_final,xyz,keyword):
             #     # print(x)
             #     y=y+1
         except:
-            a='no details availiable'
+            a='Timeout occured'
         
         a=a+"..."
         tuples.append(a)

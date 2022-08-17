@@ -113,7 +113,6 @@ def find_local_anchors(soup, start_anchor):
 
 
 def crawl(base_url , start_anchor):
-    search_anchors = queue.Queue()
     urls = set()
     count = 0
     while True:

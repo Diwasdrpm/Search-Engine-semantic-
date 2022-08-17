@@ -91,7 +91,7 @@ def paragraph(listing_final,xyz,keyword):
     mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Isolux@1987",
+    password="type_your_password",
     database="crawler_database"
     )
 
@@ -144,7 +144,7 @@ keyword = input("Enter the word you want to search on google:")
 mydb = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="Isolux@1987",
+    password="type_your_password",
     database="crawler_database"
     )
 my_cursor=mydb.cursor()
